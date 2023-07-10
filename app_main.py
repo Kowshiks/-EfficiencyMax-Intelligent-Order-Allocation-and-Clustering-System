@@ -12,8 +12,8 @@ import threading
 app = Flask(__name__)
 CORS(app)
 
-app.config['BASIC_AUTH_USERNAME'] = 'test'
-app.config['BASIC_AUTH_PASSWORD'] = 'test'
+app.config['BASIC_AUTH_USERNAME'] = 'username'
+app.config['BASIC_AUTH_PASSWORD'] = 'password'
 
 basic_auth = BasicAuth(app)
 
@@ -41,8 +41,8 @@ def get_all_orders():
 
     url = 'https://ssapi.shipstation.com/orders?orderStatus=awaiting_shipment'
 
-    username = '0b34454f3a5a4efb918ea70951f9e7e8'
-    password = '6c6dad7d2f914b3f8d961a407339d24e'
+    username = 'usernamr'
+    password = 'password'
 
     page = 1
     has_next_page = True
@@ -153,8 +153,8 @@ def process_selections():
 
     # url = 'https://ssapi.shipstation.com/orders/assignuser'
 
-    # username = '884ba8c4c56e4aa29e639cfa733436c3'
-    # password = '452294eb3acd4d549d0486f07fef08bd'
+    # username = 'username'
+    # password = 'password'
 
     # for key,value in final_cluster.items():
 
