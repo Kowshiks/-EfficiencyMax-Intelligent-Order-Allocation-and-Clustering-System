@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body onload="fetchOrder()">
+    <div id="output"></div>
+    <input type="number" id="numPeople" placeholder="Number of people">
+  
+	<button onclick="createDropdowns()" disabled>Submit</button>
+	<div id="dropdownContainer"></div>
+	<button onclick="sendSelections()">Send Selections</button>
+    <script>
+        var numPeople = 0;
+		var dropdowns = [];
+		var wrapCounts = [];
+
+
+    function fetchOrder() {
+
+        document.getElementById('output').innerHTML = 'WAIT UNTILL YOU RECEIVE THE TOTAL WRAPS';
+        fetch('http://127.0.0.1:8080/get_orders', {
+          headers: {
+            'Authorization': 'Basic ' + btoa('test:test')
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Display the received response
+          document.getElementById('output').innerHTML = 'THE TOTAL NUMBER OF WRAPS AVAILABLE IS :' + data;
+
+          // Enable the button after receiving the response
+          document.querySelector('button').disabled = false;
+        })
+        .catch(error => {
+          // Handle any errors that occurred during the API request
+          document.getElementById('output').innerHTML = 'Error: ' + error;
+        });
+    }
+
+		function createDropdowns() {
+
+		    var numPeopleInput = document.getElementById('numPeople');
+		    numPeople = parseInt(numPeopleInput.value);
+
+		    if (!isNaN(numPeople)) {
+		        var dropdownContainer = document.getElementById('dropdownContainer');
+		        dropdownContainer.innerHTML = '';
+
+		        dropdowns = [];
+		        wrapCounts = [];
+
+		        for (var i = 0; i < numPeople; i++) {
+		            var dropdownWrapper = document.createElement('div');
+
+		            var nameLabel = document.createElement('label');
+		            nameLabel.textContent = 'Name: ';
+		            dropdownWrapper.appendChild(nameLabel);
+
+		            var dropdown = document.createElement('select');
+		            dropdown.id = 'dropdown' + i;
+		            dropdownWrapper.appendChild(dropdown);
+		            dropdowns.push(dropdown);
+
+		            var wrapCountLabel = document.createElement('label');
+		            wrapCountLabel.textContent = 'Wraps: ';
+		            dropdownWrapper.appendChild(wrapCountLabel);
+
+		            var wrapCountInput = document.createElement('input');
+		            wrapCountInput.type = 'number';
+		            wrapCountInput.id = 'wrapCount' + i;
+		            dropdownWrapper.appendChild(wrapCountInput);
+		            wrapCounts.push(wrapCountInput);
+
+		            dropdownContainer.appendChild(dropdownWrapper);
+		        }
+
+		        getData();
+		    }
+		}
+
+		function getData() {
+		    var xhr = new XMLHttpRequest();
+		    xhr.open('GET', 'https://ssapi.shipstation.com/users', true);
+		    xhr.setRequestHeader('Authorization', 'Basic ' + btoa('0b34454f3a5a4efb918ea70951f9e7e8:6c6dad7d2f914b3f8d961a407339d24e'));
+		    xhr.onload = function() {
+		        if (xhr.status === 200) {
+		            var response = JSON.parse(xhr.responseText);
+		            for (var i = 0; i < dropdowns.length; i++) {
+		                populateDropdown(dropdowns[i], response);
+		            }
+		        }
+		    };
+		    xhr.send();
+		}
+
+		function populateDropdown(dropdown, data) {
+		    dropdown.innerHTML = '';
+
+		    for (var i = 0; i < data.length; i++) {
+		        var option = document.createElement('option');
+		        option.value = data[i].userId;
+		        option.text = data[i].name;
+		        dropdown.appendChild(option);
+		    }
+		}
+
+		function sendSelections() {
+		    var selections = [];
+
+		    for (var i = 0; i < dropdowns.length; i++) {
+		        var dropdown = dropdowns[i];
+		        var selectedOption = dropdown.options[dropdown.selectedIndex];
+		        var name = selectedOption.text;
+		        var userId = selectedOption.value;
+		        var wrapCount = parseInt(wrapCounts[i].value);
+		        selections.push({ name: name, userId: userId, wrapCount: wrapCount });
+		    }
+
+		    var xhr = new XMLHttpRequest();
+		    xhr.open('POST', 'http://127.0.0.1:8080/', true);
+        xhr.setRequestHeader('Authorization', 'Basic ' + btoa('test:test'));
+		    xhr.setRequestHeader('Content-Type', 'application/json');
+		    xhr.onload = function() {
+		        if (xhr.status === 200) {
+		            console.log('Selections sent to backend');
+		        }
+		    };
+		    xhr.send(JSON.stringify(selections));
+		}
+
+    </script>
+    
+  </body>
+</html>
+
