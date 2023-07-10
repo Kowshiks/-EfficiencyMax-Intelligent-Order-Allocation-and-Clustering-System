@@ -41,7 +41,7 @@ def get_all_orders():
 
     url = 'https://ssapi.shipstation.com/orders?orderStatus=awaiting_shipment'
 
-    username = 'usernamr'
+    username = 'username'
     password = 'password'
 
     page = 1
