@@ -82,7 +82,7 @@
 		function getData() {
 		    var xhr = new XMLHttpRequest();
 		    xhr.open('GET', 'https://ssapi.shipstation.com/users', true);
-		    xhr.setRequestHeader('Authorization', 'Basic ' + btoa('0b34454f3a5a4efb918ea70951f9e7e8:6c6dad7d2f914b3f8d961a407339d24e'));
+		    xhr.setRequestHeader('Authorization', 'Basic ' + btoa('username:password'));
 		    xhr.onload = function() {
 		        if (xhr.status === 200) {
 		            var response = JSON.parse(xhr.responseText);
