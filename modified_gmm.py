@@ -38,9 +38,9 @@ def algo(cur_order, actual_data, val_cache):
 
     for each_order in all_orders:
 
-        if each_order["orderId"] not in val_cache.store:
+        if each_order["val"] not in val_cache.store:
 
-            if "Free" not in each_order["requestedShippingService"]:
+            if "Free" not in each_order["val"]:
                 
                 priority_shipping.append(each_order)
 
@@ -58,7 +58,7 @@ def algo(cur_order, actual_data, val_cache):
 
         orders.append(each)
 
-        count += len(each["items"])
+        count += len(each["val"])
 
         if count > total:
 
@@ -72,7 +72,7 @@ def algo(cur_order, actual_data, val_cache):
 
             orders.append(each)
 
-            count += len(each["items"])
+            count += len(each["val"])
 
             if count > total:
 
@@ -88,32 +88,32 @@ def algo(cur_order, actual_data, val_cache):
 
         for each_item in each_order["items"]:
 
-            if len(each_item["sku"])>0:
+            if len(each_item["val"])>0:
 
-                if each_item["sku"][0] == "A":
+                if each_item["val"][0] == "A":
 
-                    if is_integer(each_item["sku"][1:]):
+                    if is_integer(each_item["val"][1:]):
 
-                        row[int(each_item["sku"][1:])-1] = 1
+                        row[int(each_item["val"][1:])-1] = 1
 
 
-                elif each_item["sku"][0] == "P":
+                elif each_item["val"][0] == "P":
 
-                    if is_integer(each_item["sku"][1:]):
+                    if is_integer(each_item["val"][1:]):
 
-                        if int(each_item["sku"][1:]) <= 1500:
+                        if int(each_item["val"][1:]) <= 1500:
 
-                            row[1601+int(each_item["sku"][1:])-1] = 1
+                            row[1601+int(each_item["val"][1:])-1] = 1
 
                         else:
 
-                            row[1601+int(each_item["sku"][1:])-1-3499] = 1
+                            row[1601+int(each_item["val"][1:])-1-3499] = 1
 
-                elif each_item["sku"][0] == "T":
+                elif each_item["val"][0] == "T":
 
-                    if is_integer(each_item["sku"][1:]):
+                    if is_integer(each_item["val"][1:]):
 
-                        row[4101+int(each_item["sku"][1:])-1] = 1
+                        row[4101+int(each_item["val"][1:])-1] = 1
 
         matrix.append(row)
 
@@ -378,7 +378,7 @@ def algo(cur_order, actual_data, val_cache):
 
                     for f in each_set["items"]:
 
-                        final_count.add(f["sku"])
+                        final_count.add(f["val"])
 
             ans+= len(final_count)
 
@@ -431,16 +431,6 @@ def algo(cur_order, actual_data, val_cache):
 
         output[key] = tmp_list
 
-
-
-
-
-
-    # print(mean_min)
-
-    # for key,value in final_mapping.items():
-
-    #     print(len(value))
 
     return output
 
