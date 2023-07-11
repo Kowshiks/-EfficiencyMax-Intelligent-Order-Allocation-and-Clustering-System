@@ -19,7 +19,7 @@
     function fetchOrder() {
 
         document.getElementById('output').innerHTML = 'WAIT UNTILL YOU RECEIVE THE TOTAL WRAPS';
-        fetch('http://127.0.0.1:8080/get_orders', {
+        fetch('GCPAPI', {
           headers: {
             'Authorization': 'Basic ' + btoa('test:test')
           }
@@ -27,7 +27,7 @@
         .then(response => response.json())
         .then(data => {
           // Display the received response
-          document.getElementById('output').innerHTML = 'THE TOTAL NUMBER OF WRAPS AVAILABLE IS :' + data;
+          document.getElementById('output').innerHTML = 'TOTAL :' + data;
 
           // Enable the button after receiving the response
           document.querySelector('button').disabled = false;
@@ -81,7 +81,7 @@
 
 		function getData() {
 		    var xhr = new XMLHttpRequest();
-		    xhr.open('GET', 'https://ssapi.shipstation.com/users', true);
+		    xhr.open('GET', 'ShopifyAPI', true);
 		    xhr.setRequestHeader('Authorization', 'Basic ' + btoa('username:password'));
 		    xhr.onload = function() {
 		        if (xhr.status === 200) {
@@ -118,7 +118,7 @@
 		    }
 
 		    var xhr = new XMLHttpRequest();
-		    xhr.open('POST', 'http://127.0.0.1:8080/', true);
+		    xhr.open('POST', 'GCPAPI', true);
         xhr.setRequestHeader('Authorization', 'Basic ' + btoa('test:test'));
 		    xhr.setRequestHeader('Content-Type', 'application/json');
 		    xhr.onload = function() {
