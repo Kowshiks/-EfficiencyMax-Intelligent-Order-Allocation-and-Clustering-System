@@ -39,7 +39,7 @@ def clear_store_at_midnight():
 
 def get_all_orders():
 
-    url = 'https://ssapi.shipstation.com/orders?orderStatus=awaiting_shipment'
+    url = 'Shopify API'
 
     username = 'username'
     password = 'password'
@@ -62,8 +62,8 @@ def get_all_orders():
         if response.status_code == 200:
 
             data = response.json()
-            every_orders = data['orders']
-            all_orders.extend(data['orders'])
+            every_orders = data['val']
+            all_orders.extend(data['val'])
             has_next_page = data['pages'] > page
             page += 1
 
@@ -72,9 +72,9 @@ def get_all_orders():
 
                 for each_item in each["items"]:
 
-                    val_cache.count += int(each_item["quantity"])
+                    val_cache.count += int(each_item["val"])
 
-                    tmp_count+=int(each_item["quantity"])
+                    tmp_count+=int(each_item["val"])
 
 
         else:
@@ -99,8 +99,6 @@ def test():
 @app.route('/get_orders', methods=["GET"])
 @basic_auth.required
 def all_orders():
-
-    print("OKOK")
 
     val_cache.orders = None
     val_cache.count = 0
@@ -151,7 +149,7 @@ def process_selections():
 
     print(final_cluster)
 
-    # url = 'https://ssapi.shipstation.com/orders/assignuser'
+    # url = 'Shoppify API'
 
     # username = 'username'
     # password = 'password'
