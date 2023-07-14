@@ -1,1 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body onload="getProduct()">
+    <div id="output"></div>
+    <input type="number" id="numPeople" placeholder="Number of people">
+  
+	<button onclick="selectFeature()" disabled>Submit</button>
+
+	<div id="dropdownContainer"></div>
+	<button onclick="sendSelections()">Send Selections</button>
+    <script>
+
+        var total_k = 0;
+		var select_feature = [];
+		var product_count = [];
+
+
+    function getProduct() {
+
+        document.getElementById('output').innerHTML = 'TOTAL NUMBER LOADING';
+
+        fetch('http://127.0.0.1:8080/get_products', {
+          headers: {
+            'Authorization': 'Basic ' + btoa('test:test')
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+
+          document.getElementById('output').innerHTML = 'TOTAL PRODUCT AVAILABLE :' + data;
+
+          document.querySelector('button').disabled = false;
+        })
+        .catch(error => {
+          document.getElementById('output').innerHTML = 'Error: ' + error;
+        });
+    }
+
+		function selectFeature() {
+
+		    var numPeopleInput = document.getElementById('numPeople');
+		    total_k = parseInt(numPeopleInput.value);
+
+		    if (!isNaN(total_k)) {
+		        var dropdownContainer = document.getElementById('dropdownContainer');
+		        dropdownContainer.innerHTML = '';
+
+		        select_feature = [];
+		        product_count = [];
+
+		        for (var i = 0; i < total_k; i++) {
+		            var dropdownWrapper = document.createElement('div');
+
+		            var nameLabel = document.createElement('label');
+		            nameLabel.textContent = 'Name: ';
+		            dropdownWrapper.appendChild(nameLabel);
+
+		            var dropdown = document.createElement('select');
+		            dropdown.id = 'dropdown' + i;
+		            dropdownWrapper.appendChild(dropdown);
+		            select_feature.push(dropdown);
+
+		            var wrapCountLabel = document.createElement('label');
+		            wrapCountLabel.textContent = 'Wraps: ';
+		            dropdownWrapper.appendChild(wrapCountLabel);
+
+		            var wrapCountInput = document.createElement('input');
+		            wrapCountInput.type = 'number';
+		            wrapCountInput.id = 'wrapCount' + i;
+		            dropdownWrapper.appendChild(wrapCountInput);
+		            product_count.push(wrapCountInput);
+
+		            dropdownContainer.appendChild(dropdownWrapper);
+		        }
+
+		        getData();
+		    }
+		}
+
+		function getData() {
+		    var xhr = new XMLHttpRequest();
+		    xhr.open('GET', 'USERS API', true);
+		    xhr.setRequestHeader('Authorization', 'Basic ' + btoa('username:password'));
+		    xhr.onload = function() {
+		        if (xhr.status === 200) {
+		            var response = JSON.parse(xhr.responseText);
+		            for (var i = 0; i < select_feature.length; i++) {
+		                populateDropdown(select_feature[i], response);
+		            }
+		        }
+		    };
+		    xhr.send();
+		}
+
+		function populateDropdown(dropdown, data) {
+		    dropdown.innerHTML = '';
+
+		    for (var i = 0; i < data.length; i++) {
+		        var sect = document.createElement('option');
+		        sect.value = data[i].userId;
+		        sect.text = data[i].name;
+		        dropdown.appendChild(sect);
+		    }
+		}
+
+		function sendSelections() {
+		    var selections = [];
+
+		    for (var i = 0; i < select_feature.length; i++) {
+
+		        var extra_feature = select_feature[i];
+		        var selectedOption = extra_feature.options[extra_feature.selectedIndex];
+		        var name = selectedOption.text;
+		        var userId = selectedOption.value;
+		        var wrapCount = parseInt(product_count[i].value);
+		        selections.push({ name: name, userId: userId, wrapCount: wrapCount });
+
+		    }
+
+		    var xhr = new XMLHttpRequest();
+		    xhr.open('POST', 'http://127.0.0.1:8080/', true);
+        xhr.setRequestHeader('Authorization', 'Basic ' + btoa('username:password'));
+		    xhr.setRequestHeader('Content-Type', 'application/json');
+		    xhr.onload = function() {
+		        if (xhr.status === 200) {
+		            console.log('Selections sent to backend');
+		        }
+		    };
+		    xhr.send(JSON.stringify(selections));
+			
+		}
+
+    </script>
+    
+  </body>
+</html>
+
 
