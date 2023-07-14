@@ -77,7 +77,7 @@ def gmm_algo(cur_order, actual_data, val_cache):
 
     matrix = []
 
-    total_wraps = 8100
+    total_wraps = 10000
 
     for each_order in products:
 
@@ -87,14 +87,14 @@ def gmm_algo(cur_order, actual_data, val_cache):
 
             if len(each_item["val"])>0:
 
-                if each_item["val"][0] == "A":
+                if each_item["val"][0] == "X":
 
                     if check_integer(each_item["val"][1:]):
 
                         row[int(each_item["val"][1:])-1] = 1
 
 
-                elif each_item["val"][0] == "P":
+                elif each_item["val"][0] == "Y":
 
                     if check_integer(each_item["val"][1:]):
 
@@ -106,7 +106,7 @@ def gmm_algo(cur_order, actual_data, val_cache):
 
                             row[1601+int(each_item["val"][1:])-1-3499] = 1
 
-                elif each_item["val"][0] == "T":
+                elif each_item["val"][0] == "Z":
 
                     if check_integer(each_item["val"][1:]):
 
@@ -336,7 +336,7 @@ def gmm_algo(cur_order, actual_data, val_cache):
 
     mean_min = float('inf')
 
-    for i in range(10):
+    for i in range(20):
 
         clusters = gmm(True)
 
@@ -348,7 +348,7 @@ def gmm_algo(cur_order, actual_data, val_cache):
 
             mean_min = val
 
-    for i in range(10):
+    for i in range(20):
 
         clusters = gmm(False)
 
