@@ -28,7 +28,7 @@ def gmm_algo(cur_order, actual_data, val_cache):
 
         each_item_prodcut.append(each_input[1])
 
-    total = sum(each_item_prodcut) + 5*len(each_item_prodcut)
+    total = sum(each_item_prodcut) + len(each_item_prodcut)
 
 
     first = []
@@ -336,7 +336,7 @@ def gmm_algo(cur_order, actual_data, val_cache):
 
     mean_min = float('inf')
 
-    for i in range(20):
+    for i in range(10):
 
         clusters = gmm(True)
 
@@ -348,7 +348,7 @@ def gmm_algo(cur_order, actual_data, val_cache):
 
             mean_min = val
 
-    for i in range(20):
+    for i in range(10):
 
         clusters = gmm(False)
 
