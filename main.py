@@ -158,11 +158,6 @@ def run_scheduler():
     while True:
         schedule.run_pending()
         time.sleep(1)
-
-def run_scheduler():
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
         
 if __name__ == '__main__':
 
